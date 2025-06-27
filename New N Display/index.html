@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpha Abacus  - Space Mission</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app-container">
+        <div id="main-display">
+            <div id="number-container" class="number-hidden">
+                <span id="current-number"></span>
+            </div>
+            <div id="answer-container" class="hidden">
+                <span id="answer"></span>
+            </div>
+        </div>
+
+        <div id="teacher-controls">
+            <div id="logo-header">
+                <div id="logo-placeholder">
+                    <img src="WhatsApp Image 2025-03-08 at 5.34.09 AM.jpeg" alt="Alpha Abacus Logo" style="width:100%; height:100%; object-fit: cover; border-radius: 50%;">
+                </div>
+                <h2>Alpha Abacus</h2>
+            </div>
+            <div class="control-group problem-management">
+                <label for="problem-name-input">Current Question Name:</label>
+                <input type="text" id="problem-name-input" placeholder="e.g., Question 1">
+                <div class="button-row">
+                    <button id="add-problem-btn">New Question</button>
+                    <button id="delete-problem-btn" disabled>Delete Current</button>
+                </div>
+                <h3>Questions:</h3>
+                <div id="problem-list-container">
+                    </div>
+            </div>
+
+            <div class="control-group">
+                <input type="text" id="number-input" placeholder="Enter number or operator">
+                <button id="add-to-sequence-btn">Add to Sequence</button>
+            </div>
+
+            <div class="control-group">
+                <button id="toggle-sequence-visibility-btn">Hide Sequence Preview</button>
+            </div>
+
+            <div class="sequence-preview-container">
+                <h3>Current Sequence (Click to Edit):</h3>
+                <ul id="sequence-list">
+                    </ul>
+            </div>
+
+            <div class="control-group">
+                <button id="toggle-answer-visibility-btn">Hide Answer Input</button>
+            </div>
+            <div class="control-group" id="answer-control-group">
+                <input type="text" id="answer-input" placeholder="Enter expected answer">
+            </div>
+
+            <div class="control-group">
+                <button id="display-sequence-btn" disabled>Start Display</button>
+                <button id="display-answer-btn" disabled>Display Answer</button> 
+                <button id="reset-btn">Reset Display</button>
+            </div>
+
+            <div class="control-group">
+                <label for="delay-input">Display Delay (ms):</label>
+                <input type="number" id="delay-input" value="2000" min="500">
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,372 @@
+/* General Body & Root Styles */
+body {
+    margin: 0;
+    font-family: 'Nunito', sans-serif; /* Clean and modern font */
+    overflow: hidden; /* Prevents scrollbars on body */
+    background-color: #0d1a2f; /* Deep space blue/black */
+    color: #fff; /* Default text color */
+    height: 100vh; /* Full viewport height */
+    display: flex; /* Establishes flex context for app-container */
+}
+
+/* Main App Container - handles side-by-side layout of display and controls */
+#app-container {
+    display: flex;
+    width: 100%;
+    height: 100%; /* Ensures it fills the body */
+}
+
+/* Main Display Area for Kids (left side, takes most space) */
+#main-display {
+    flex-grow: 1; /* Takes all available space remaining after teacher-controls */
+    display: flex;
+    justify-content: center; /* Centers content horizontally */
+    align-items: center; /* Centers content vertically */
+    position: relative; /* Allows for absolute positioning of number/answer */
+    
+    /* Space Mission Background */
+    background-image: url('space-background.jpg'); /* REMINDER: Replace with your actual image path */
+    background-size: cover; /* Ensures the image covers the entire container */
+    background-position: center; /* Centers the background image */
+    background-repeat: no-repeat; /* Prevents background image from repeating */
+    
+    /* Subtle overlay to enhance number visibility */
+    background-blend-mode: multiply; /* Blends background with the background-color */
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay color */
+    
+    /* Transition for potential future responsiveness (e.g., if controls hide) */
+    transition: width 0.5s ease-in-out;
+}
+
+/* Animation Keyframes for "Zoom In and Settle" Effect for individual numbers */
+@keyframes zoomInAndSettle {
+    0% {
+        opacity: 0;
+        transform: scale(0.01); /* Starts almost invisible and very small */
+    }
+    70% { /* Reaches peak size, slightly larger than final */
+        opacity: 1;
+        transform: scale(1.3); /* Zooms past final size for a "pop" effect */
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1); /* Settles at its normal (1x) size */
+    }
+}
+
+/* Animation Keyframes for "Dramatic Answer Reveal" */
+@keyframes dramaticReveal {
+    0% {
+        opacity: 0;
+        transform: scale(0.2) rotate(-20deg); /* Start very small, rotated */
+        text-shadow: none; /* No glow initially */
+    }
+    60% {
+        opacity: 1;
+        transform: scale(1.2) rotate(10deg); /* Overshoot slightly */
+        text-shadow: 0 0 10px rgba(11, 182, 88, 0.5); /* Start glowing */
+    }
+    80% {
+        transform: scale(0.9); /* Slight undershoot */
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg); /* Settle at final size and rotation */
+        text-shadow: 0 0 30px rgba(14, 165, 102, 0.8), /* Full glow */
+                     0 0 10px rgba(19, 189, 70, 0.5);
+    }
+}
+
+
+/* Number Display Styling (Current Number & Answer) */
+#number-container, #answer-container {
+    font-size: 10em; /* Very large for clear visibility for students */
+    font-weight: 700; /* Bold text weight from Nunito font */
+    position: absolute; /* Allows precise centering within #main-display */
+    /* text-shadow and transform/opacity for #answer-container will be controlled by animation */
+}
+
+#number-container {
+    color: #8be9fd; /* Main color for numbers (Space Blue/Cyan) */
+    text-shadow: 0 0 30px rgba(139, 233, 253, 0.8), /* Soft outer glow */
+                 0 0 10px rgba(139, 233, 253, 0.5); /* Inner, brighter glow */
+}
+
+#answer-container {
+    color: #0bf16b; /* A distinct, vibrant color for the answer (Galactic Pink) */
+}
+
+/* Utility Class to force element hiding */
+.hidden {
+    display: none !important;
+}
+
+/* Animation Classes for "Zoom In and Settle" for individual numbers */
+.number-hidden { /* Used when number is completely hidden or resetting state */
+    opacity: 0;
+    transform: scale(0.01); /* Matches start of the animation for seamless transition */
+    /* Transition for smoothly fading out when hiding the number */
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+}
+.number-visible { /* Used when number is active and animating into view */
+    animation: zoomInAndSettle 0.5s ease-out forwards; /* Applies the keyframe animation */
+    /* 'forwards' ensures the element retains the styles defined in the last keyframe (100%) */
+    /* No 'transition' property here, as the animation takes precedence for entry */
+}
+
+/* Class to trigger the answer reveal animation */
+.answer-visible {
+    animation: dramaticReveal 0.6s ease-out forwards;
+}
+
+
+/* Teacher Controls (right sidebar dashboard) */
+#teacher-controls {
+    width: 320px; /* Fixed width for the sidebar */
+    background-color: #1a2c42; /* Slightly lighter dark blue for sidebar background */
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Stacks controls vertically */
+    gap: 20px; /* Space between major control groups */
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Shadow to separate sidebar from main display */
+    overflow-y: auto; /* Enables scrolling within the sidebar if content exceeds height */
+}
+
+#teacher-controls h2, #teacher-controls h3 {
+    text-align: center;
+    color: #f8f8f2; /* Light text for headings */
+    margin-top: 0; /* Remove default top margin */
+}
+
+/* Grouping for control elements */
+.control-group {
+    display: flex;
+    flex-direction: column; /* Stacks items within the group */
+    gap: 10px; /* Space between elements in the group */
+}
+
+/* Styling for buttons and inputs across control groups */
+.control-group button, .control-group input {
+    padding: 12px;
+    font-size: 1em; /* Consistent font size */
+    border: none;
+    border-radius: 8px; /* Rounded corners for modern look */
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif; /* Consistent font */
+    font-weight: 700;
+}
+
+.control-group button {
+    background-color: #6272a4; /* Space cadet blue for buttons */
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Subtle button shadow */
+    transition: background-color 0.3s ease; /* Smooth hover transition */
+}
+
+.control-group button:hover:not(:disabled) {
+    background-color: #798bb6; /* Lighter color on hover */
+}
+
+.control-group button:disabled {
+    background-color: #44475a; /* Darker background for disabled state */
+    cursor: not-allowed; /* Indicates non-interactiveness */
+    opacity: 0.7; /* Reduces opacity for disabled state */
+}
+
+.control-group input[type="text"], .control-group input[type="number"] {
+    background-color: #44475a; /* Darker input fields */
+    color: #f8f8f2; /* Light text in inputs */
+    border: 1px solid #6272a4; /* Border matching button color */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4); /* Inner shadow for depth */
+}
+
+.control-group label {
+    color: #f8f8f2; /* Light text for labels */
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+/* Sequence Preview List Container */
+.sequence-preview-container {
+    background-color: #283a54; /* Slightly lighter background for the list */
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #6272a4;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    flex-grow: 1; /* Allows the list to grow and fill available space */
+    display: flex;
+    flex-direction: column; /* Stacks content within the container */
+    position: relative; /* For potential absolute positioning of elements inside */
+}
+
+#sequence-list {
+    list-style: none; /* Removes default list bullets */
+    padding: 0;
+    margin: 0;
+    color: #f8f8f2;
+    font-size: 1.1em;
+    max-height: 250px; /* Limits height to enable scrolling for long sequences */
+    overflow-y: auto; /* Enables vertical scrolling */
+    background-color: #283a54; /* Ensures background is consistent for scrollable area */
+}
+
+#sequence-list li {
+    padding: 8px 5px;
+    border-bottom: 1px dashed rgba(255,255,255,0.1); /* Subtle separator */
+    display: flex; /* Uses flex for aligning text and delete button */
+    justify-content: space-between; /* Pushes text to left, button to right */
+    align-items: center; /* Vertically aligns items */
+    cursor: pointer; /* Indicates clickability for editing */
+    transition: background-color 0.2s ease; /* Smooth hover effect */
+}
+#sequence-list li:hover {
+    background-color: rgba(255, 255, 255, 0.05); /* Slight hover effect */
+}
+#sequence-list li:last-child {
+    border-bottom: none; /* No border on the last item */
+}
+
+/* Style for the inline edit input within list items */
+#sequence-list li input {
+    flex-grow: 1; /* Input takes up available space */
+    padding: 5px;
+    border: 1px solid #6272a4;
+    background-color: #44475a;
+    color: #f8f8f2;
+    border-radius: 4px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1em; /* Matches list item font size */
+    outline: none; /* Removes default browser outline on focus */
+}
+
+/* Style for the delete button within list items */
+.delete-item-btn {
+    background: none; /* No background fill */
+    border: none; /* No border */
+    color: #ff5555; /* Red color for delete - strong visual cue */
+    font-size: 1.2em;
+    cursor: pointer;
+    margin-left: 10px; /* Space from the text/input field */
+    padding: 0 5px;
+    line-height: 1; /* Helps with vertical alignment */
+    transition: color 0.2s ease; /* Smooth hover effect */
+}
+.delete-item-btn:hover {
+    color: #ff0000; /* Brighter red on hover */
+}
+
+/*
+* Responsive Design Considerations (RECOMMENDED FUTURE ADDITION)
+* The current setup with a fixed-width sidebar will not be ideal on smaller screens (e.g., mobile).
+* You would add media queries here to adjust the layout:
+* @media (max-width: 768px) {
+* #app-container { flex-direction: column; }
+* #teacher-controls { width: 100%; height: auto; box-shadow: none; }
+* #main-display { width: 100%; height: 60vh; }
+* #number-container, #answer-container { font-size: 8em; }
+* ... etc. ...
+* }
+*/
+
+/* ... (your existing style.css code above these lines) ... */
+
+/* New Styles for Problem Management Section */
+.problem-management {
+    border-bottom: 1px dashed rgba(255,255,255,0.1); /* Separator */
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.problem-management .button-row {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+    margin-top: 10px;
+}
+
+#problem-list-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow buttons to wrap to next line */
+    gap: 8px; /* Space between problem buttons */
+    margin-top: 10px;
+    padding: 5px;
+    background-color: #283a54; /* Background for the list of buttons */
+    border-radius: 8px;
+    border: 1px solid #6272a4;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    max-height: 120px; /* Limit height if many questions */
+    overflow-y: auto; /* Enable scrolling if too many questions */
+}
+
+.problem-button {
+    flex-shrink: 0; /* Prevent buttons from shrinking */
+    padding: 8px 12px;
+    font-size: 0.9em;
+    background-color: #44475a; /* Default button color */
+    color: #f8f8f2;
+    border: 1px solid #6272a4;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.problem-button:hover {
+    background-color: #55586d;
+}
+
+.problem-button.active {
+    background-color: #bd93f9; /* Highlight color for active button */
+    color: #0d1a2f; /* Dark text for contrast */
+    border-color: #f8f8f2; /* White border */
+    font-weight: 700;
+    box-shadow: 0 0 8px rgba(189, 147, 249, 0.5); /* Glow for active */
+}
+
+/* Ensure disabled buttons have a consistent look */
+.problem-button:disabled {
+    background-color: #333642;
+    color: #999;
+    cursor: not-allowed;
+    opacity: 0.6;
+    box-shadow: none;
+}
+
+
+
+/* ... (your existing style.css code above these lines) ... */
+
+/* New Style for Hiding Sequence Preview */
+.sequence-preview-container.hidden-preview {
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border: none; /* Remove border when hidden */
+    transition: all 0.3s ease-out; /* Smooth transition */
+}
+
+/* Ensure the visible state has its default margins/padding */
+.sequence-preview-container {
+    transition: all 0.3s ease-out; /* Add transition to visible state too */
+}
+
+
+/* ... (your existing style.css code above these lines) ... */
+
+/* Style for Hiding Control Groups (reusable for answer input) */
+.control-group.hidden-control-group {
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border: none; /* Remove border when hidden */
+    transition: all 0.3s ease-out; /* Smooth transition */
+}
+
+/* Ensure the visible control groups also transition smoothly */
+.control-group {
+    transition: all 0.3s ease-out;
+}
